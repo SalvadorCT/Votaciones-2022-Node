@@ -44,8 +44,8 @@ model Candidato {
   apellido          String   @db.Text
   partidoPoliticoId Int      @map("partido_politico_id")
   partidoPolitico   partidoPolitico @relation(fields: [partidoPoliticoId], references: [id])
-  reginId           Int      @map("region_id")
-  region            region   @relation(fields: [reginId], references: [id])
+  regionId           Int      @map("region_id")
+  region            region   @relation(fields: [regionId], references: [id])
 
   sufragios         Sufragio[]
   @@map("candidatos")
