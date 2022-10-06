@@ -14,7 +14,8 @@
     "crear:migracion":"prisma migrate dev",
     "crear:solo:migracion":"prisma migrate dev --create-only",
     "ejecutar:migracion":"prisma migrate deploy",
-    "resetear:bd":"prisma migrate reset"
+    "resetear:bd":"prisma migrate reset",
+    "start": "node ./src/index.js"
   },
   "repository": {
     "type": "git",
