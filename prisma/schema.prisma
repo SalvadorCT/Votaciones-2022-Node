@@ -11,53 +11,58 @@ datasource db {
 }
 
 model partidoPolitico {
-  id           Int      @id @default(autoincrement())
-  nombre       String   @unique @db.VarChar(45)
-  logo         String   @db.Text
+  id     Int    @id @default(autoincrement())
+  nombre String @unique @db.VarChar(45)
+  logo   String @db.Text
 
-  candidatos   Candidato[]
+  candidatos Candidato[]
 
   @@map("partidos_politicos")
 }
 
-model region {
-  id           Int      @id @default(autoincrement())
-  nombre       String   @unique @db.VarChar(45)
+model Region {
+  id     Int    @id @default(autoincrement())
+  nombre String @unique @db.VarChar(45)
 
-  candidatos   Candidato[]
+  candidatos Candidato[]
+  votantes   Votante[]
+
   @@map("regiones")
 }
 
-model votante{
-  dni          String   @id @db.VarChar(8)
-  nombre       String   @db.Text
-  apellido     String   @db.Text
-  region       String   @db.Text
+model Votante {
+  dni      String @id @db.VarChar(8)
+  nombre   String @db.Text
+  apellido String @db.Text
+  regionId Int    @map("region_id")
+  region   Region @relation(fields: [regionId], references: [id])
 
-  sufragios    Sufragio[]
+  sufragios Sufragio[]
+
   @@map("votantes")
 }
 
 model Candidato {
-  id                Int      @id @default(autoincrement())
-  nombre            String   @db.Text
-  apellido          String   @db.Text
-  partidoPoliticoId Int      @map("partido_politico_id")
+  id                Int             @id @default(autoincrement())
+  nombre            String          @db.Text
+  apellido          String          @db.Text
+  partidoPoliticoId Int             @map("partido_politico_id")
   partidoPolitico   partidoPolitico @relation(fields: [partidoPoliticoId], references: [id])
-  regionId           Int      @map("region_id")
-  region            region   @relation(fields: [regionId], references: [id])
+  regionId          Int             @map("region_id")
+  region            Region          @relation(fields: [regionId], references: [id])
 
-  sufragios         Sufragio[]
+  sufragios Sufragio[]
+
   @@map("candidatos")
 }
 
 model Sufragio {
-  id                Int       @id @default(autoincrement())
-  fecha             DateTime  @default(now())
-  votanteId         String    @unique @map("votante_id") @db.VarChar(8) 
-  votante           votante   @relation(fields: [votanteId], references: [dni])
-  candidatoId       Int       @map("candidato_id")
-  candidato         Candidato @relation(fields: [candidatoId], references: [id])
+  id          Int       @id @default(autoincrement())
+  fecha       DateTime  @default(now())
+  votanteId   String    @unique @map("votante_id") @db.VarChar(8)
+  votante     Votante   @relation(fields: [votanteId], references: [dni])
+  candidatoId Int       @map("candidato_id")
+  candidato   Candidato @relation(fields: [candidatoId], references: [id])
 
   @@map("sufragios")
 }

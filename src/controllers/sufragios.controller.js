@@ -72,4 +72,30 @@ export const crearSufragio = async (req, res) => {
     }
 }
 
+export const listarResultados = async (req, res) => {
+    //devolveremos los candidatos filtrados por region y su cantidad de votos
+    // http://127.0.0.1:5000/sufragios/AREQUIPA
+    // diferencia entre req.params y req.query
+    // req.params: /sufragios/:region
+    // req.query: /sufragios?region=AREQUIPA
 
+    const {region} = req.params;
+    console.log(region);
+
+    // SELECT * FROM sufragios INNER JOIN candidatos ON sufragios.candidato_id = candidatos.id INNER JOIN regiones ON candidatos.region_id = regiones.id;
+
+    const data = await conexion.sufragio.findMany({
+        where: {
+            candidato: {
+                region: {
+                    nombre: region,
+                },
+            },
+        },
+    });
+
+    return res.status(200).json({
+        message: null,
+        content: data,
+    });
+}

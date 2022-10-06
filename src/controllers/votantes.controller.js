@@ -2,7 +2,7 @@ import conexion from '../prisma.js';
 import fetch from 'node-fetch';
 
 export const crearVotante = async (req, res) => {
-    const { dni,region } = req.body;
+    const { dni,regionId } = req.body;
     try {
         const respuesta = await fetch(`https://apiperu.dev/api/dni/${dni}`,{
         headers: {
@@ -21,7 +21,7 @@ export const crearVotante = async (req, res) => {
                     apellido: data.apellido_paterno + " " + data.apellido_materno,
                     nombre: data.nombres,
                     dni: data.numero,
-                    region,
+                    regionId,
                 }, 
             })
 
